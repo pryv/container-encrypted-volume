@@ -1,0 +1,9 @@
+{
+  "name": "clevis",
+  "version": "1",
+  "description": "Delegates to the Clevis framework to unlock from a bound JWE — TPM2, Tang (network-bound), PKCS#11, or Shamir-threshold policies. The container holds only the JWE; the unlock secret is reconstructed from the bound device/server at boot.",
+  "envelope": true,
+  "vars": [
+    { "name": "CEV_CLEVIS_JWE", "required": true, "secret": false, "description": "Path to the Clevis JWE that wraps the 32-byte key. Produced once with: `clevis encrypt tpm2 '{}' < rawkey > cev.jwe` (or `clevis encrypt tang '{\"url\":...}'`)." }
+  ]
+}

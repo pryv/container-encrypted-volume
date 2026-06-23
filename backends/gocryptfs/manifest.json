@@ -1,0 +1,11 @@
+{
+  "name": "gocryptfs",
+  "version": "1",
+  "description": "gocryptfs FUSE-stacked encrypted directory (per-file). Reduced privilege vs LUKS but still needs SYS_ADMIN + /dev/fuse and an unconfined apparmor profile to mount.",
+  "requires": ["--cap-add=SYS_ADMIN", "--device=/dev/fuse", "--security-opt=apparmor=unconfined"],
+  "capabilities": {
+    "rotateWithoutReencrypt": true,
+    "separableHeaderBackup": true,
+    "growInPlace": false
+  }
+}

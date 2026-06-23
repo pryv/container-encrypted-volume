@@ -1,0 +1,10 @@
+{
+  "name": "aws-kms",
+  "version": "1",
+  "description": "Envelope provider: stores the unlock key as a KMS-wrapped data-key blob and unwraps it at boot via AWS KMS, authorized by the container's AWS identity (instance/task IAM role, or IAM Roles Anywhere for non-AWS hosts). The KMS key never enters the container.",
+  "envelope": true,
+  "vars": [
+    { "name": "CEV_KMS_BLOB", "required": true, "secret": false, "description": "Path to the KMS-encrypted data-key blob (binary CiphertextBlob). Safe to ship alongside the data — useless without the KMS identity." },
+    { "name": "CEV_AWS_REGION", "required": false, "secret": false, "description": "AWS region of the KMS key (e.g. eu-central-2 for Zurich). Falls back to the ambient AWS config if unset." }
+  ]
+}
