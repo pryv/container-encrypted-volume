@@ -61,6 +61,10 @@ Adding a new backend or provider = copy the matching `_template/`, implement the
 verbs, and pass the conformance harness. See
 [docs/AUTHORING.md](docs/AUTHORING.md).
 
+**Operators:** see [docs/OPERATING.md](docs/OPERATING.md) for the threat model,
+run flags, key-provider choice (incl. cloud-KMS / IAM Roles Anywhere), rotation,
+and disaster recovery.
+
 ## Configuration (CEV_* environment)
 
 | Variable | Meaning | Default |
