@@ -22,7 +22,10 @@ log() { printf 'luks: %s\n' "$*" >&2; }
 die() { printf 'luks: ERROR: %s\n' "$*" >&2; exit 1; }
 
 is_provisioned() { [ -f "$CEV_CONTAINER" ] && cryptsetup isLuks "$CEV_CONTAINER" 2>/dev/null; }
-is_open()        { [ -b "$MAPDEV" ]; }
+# consult the kernel device-mapper table, not just the /dev node: under
+# --privileged a mapping lives in the host kernel and may exist even when this
+# container's /dev/mapper node is absent (or vice-versa).
+is_open()        { cryptsetup status "$CEV_MAP_NAME" >/dev/null 2>&1; }
 is_mounted()     { mountpoint -q "$CEV_MOUNT" 2>/dev/null; }
 need_key()       { [ -s "${CEV_KEYFILE:?key required}" ] || die "keyfile $CEV_KEYFILE is empty"; }
 
@@ -47,12 +50,22 @@ provision() {
 
 open() {
   is_provisioned || die "not provisioned — run provision first"
+  # If a mapping with our name already exists but is NOT mounted in this
+  # container, it is stale — typically leaked into the host kernel by a previous
+  # --privileged container. Close it and re-open so the supplied key is ALWAYS
+  # validated (never silently reuse a mapping a wrong key could ride on). If it
+  # IS mounted here, this is just an idempotent repeat — keep it.
+  if is_open && ! is_mounted; then
+    log "stale mapping $CEV_MAP_NAME present (no mount here) — closing to re-validate key"
+    cryptsetup close "$CEV_MAP_NAME" 2>/dev/null || die "could not clear stale mapping $CEV_MAP_NAME"
+  fi
   if ! is_open; then
     need_key
     cryptsetup open --key-file "$CEV_KEYFILE" "$CEV_CONTAINER" "$CEV_MAP_NAME" \
       || die "cryptsetup open failed (wrong key?)"
     log "opened $MAPDEV"
   fi
+  [ -b "$MAPDEV" ] || die "mapping active but $MAPDEV node missing in this container"
   # first open after provision: the mapped device has no filesystem yet
   if ! blkid "$MAPDEV" >/dev/null 2>&1; then
     log "formatting ext4 on first open"

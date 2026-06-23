@@ -78,7 +78,7 @@ cev_up() {
   local bsh kf; bsh="$(backend_sh)"
   [ -x "$bsh" ] || die "unknown backend '$CEV_BACKEND' (expected $bsh)"
   "$bsh" preflight || die "backend '$CEV_BACKEND' preflight failed"
-  kf="$(keyfile_mktemp)"; trap 'shred_file "$kf"' EXIT
+  kf="$(keyfile_mktemp)"; trap 'shred_file "${kf:-}"' EXIT
   resolve_key "$CEV_KEY_PROVIDER" "$kf"
   CEV_KEYFILE="$kf" "$bsh" provision
   CEV_KEYFILE="$kf" "$bsh" open
@@ -92,7 +92,7 @@ cev_status() { "$(backend_sh)" status; }
 cev_rotate() {
   local bsh old new; bsh="$(backend_sh)"
   old="$(keyfile_mktemp)"; new="$(keyfile_mktemp)"
-  trap 'shred_file "$old"; shred_file "$new"' EXIT
+  trap 'shred_file "${old:-}"; shred_file "${new:-}"' EXIT
   resolve_key "$CEV_KEY_PROVIDER" "$old"
   resolve_key "${CEV_NEW_KEY_PROVIDER:-$CEV_KEY_PROVIDER}" "$new"
   CEV_KEYFILE="$old" CEV_NEW_KEYFILE="$new" "$bsh" rotate
@@ -101,7 +101,7 @@ cev_rotate() {
 }
 
 cev_header_backup() { "$(backend_sh)" header-backup; }
-cev_grow()          { local kf; kf="$(keyfile_mktemp)"; trap 'shred_file "$kf"' EXIT
+cev_grow()          { local kf; kf="$(keyfile_mktemp)"; trap 'shred_file "${kf:-}"' EXIT
                       resolve_key "$CEV_KEY_PROVIDER" "$kf"
                       CEV_KEYFILE="$kf" "$(backend_sh)" grow; shred_file "$kf"; trap - EXIT; }
 
