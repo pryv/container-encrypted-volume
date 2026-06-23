@@ -36,12 +36,16 @@ ENV CEV_ENABLED=false \
     CEV_EXPORTS="PRYV_DATADIR=data" \
     CEV_EXEC=/app/scripts/docker-entrypoint.sh
 
-# IMPORTANT — relocate ALL data roots into $CEV_MOUNT, not only attachments:
-#   * Attachments: handled by CEV_EXPORTS (PRYV_DATADIR -> $CEV_MOUNT/data).
-#   * rqlite dataDir and userLocalDirectory are open-pryv.io config keys — point
-#     them at paths UNDER $CEV_MOUNT in your override-config.yml. Do NOT reuse
-#     /app/var-pryv/rqlite-data: the base image declares it as a VOLUME, which
-#     would shadow the encrypted mount with an anonymous volume.
+# IMPORTANT — relocate ALL data roots into $CEV_MOUNT, not only attachments.
+# All three are open-pryv.io config keys and support ${ENV} interpolation, so NO
+# base-image change is needed — set them in your override-config.yml:
+#   * Attachments: handled here by CEV_EXPORTS (PRYV_DATADIR -> $CEV_MOUNT/data),
+#     which the stock production config already reads
+#     (storages:engines:...:attachmentsDirPath: "${PRYV_DATADIR}/...").
+#   * SQLite per-user base:  storages:engines:sqlite:path:  "${PRYV_DATADIR}/sqlite"
+#   * rqlite data dir:       storages:engines:rqlite:dataDir: "${PRYV_DATADIR}/rqlite-data"
+#     Do NOT reuse /app/var-pryv/rqlite-data: the base image declares it as a
+#     VOLUME, which would shadow the encrypted mount with an anonymous volume.
 #   * PostgreSQL (when used) is an external, operator-managed data dir outside
 #     this container — encrypt it operator-side; this overlay does not cover it.
 
