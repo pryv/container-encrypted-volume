@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/pryv/container-encrypted-volume/schemas/key-provider.manifest.schema.json",
+  "title": "container-encrypted-volume key-provider manifest",
+  "description": "Declares a key provider: where the 32-byte unlock key comes from at boot.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "version", "description", "envelope", "vars"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Provider identifier; must match its directory name and the CEV_KEY_PROVIDER value."
+    },
+    "version": { "type": "string" },
+    "description": { "type": "string" },
+    "envelope": {
+      "type": "boolean",
+      "description": "true if the key is stored encrypted (a wrapped blob) and unwrapped at boot by an external KMS/HSM authorized by the container identity (the unwrapping key never enters the container). false for plaintext-delivery providers (env/file/exec)."
+    },
+    "vars": {
+      "type": "array",
+      "description": "Provider-specific CEV_* environment variables this provider reads.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "required", "description"],
+        "properties": {
+          "name": { "type": "string", "pattern": "^CEV_[A-Z0-9_]+$" },
+          "required": { "type": "boolean" },
+          "secret": { "type": "boolean", "description": "true if the value is sensitive and must never be logged." },
+          "description": { "type": "string" }
+        }
+      }
+    }
+  }
+}

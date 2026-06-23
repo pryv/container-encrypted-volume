@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/pryv/container-encrypted-volume/schemas/backend.manifest.schema.json",
+  "title": "container-encrypted-volume backend manifest",
+  "description": "Declares a storage backend: how data is encrypted on disk, what the runtime must grant, and which optional capabilities it supports.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "version", "description", "requires", "capabilities"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Backend identifier; must match its directory name and the CEV_BACKEND value."
+    },
+    "version": {
+      "type": "string",
+      "description": "Contract revision this backend implements."
+    },
+    "description": {
+      "type": "string"
+    },
+    "requires": {
+      "type": "array",
+      "description": "Container runtime flags the backend needs (informational + checked by preflight). e.g. [\"--privileged\"] or granular --cap-add/--device/--security-opt.",
+      "items": { "type": "string" }
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Honest declaration of optional features. A backend MUST report false rather than silently degrade.",
+      "required": ["rotateWithoutReencrypt", "separableHeaderBackup", "growInPlace"],
+      "properties": {
+        "rotateWithoutReencrypt": {
+          "type": "boolean",
+          "description": "true if `rotate` swaps the unlock key without re-encrypting bulk data (e.g. LUKS key-slots)."
+        },
+        "separableHeaderBackup": {
+          "type": "boolean",
+          "description": "true if `header-backup` can emit recovery metadata separable from the bulk data (e.g. LUKS header)."
+        },
+        "growInPlace": {
+          "type": "boolean",
+          "description": "true if `grow` can expand capacity of an existing container in place."
+        }
+      }
+    }
+  }
+}

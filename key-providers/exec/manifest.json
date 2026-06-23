@@ -1,0 +1,9 @@
+{
+  "name": "exec",
+  "version": "1",
+  "description": "Runs an operator-supplied command and reads the base64 key from its stdout. The universal escape hatch — wraps any cloud secret CLI (aws secretsmanager get-secret-value, gcloud secrets versions access, az keyvault secret show, vault kv get, ...).",
+  "envelope": false,
+  "vars": [
+    { "name": "CEV_KEY_COMMAND", "required": true, "secret": false, "description": "Shell command whose stdout is the base64-encoded 32-byte key. Runs with the container's identity (IAM role / Workload Identity)." }
+  ]
+}

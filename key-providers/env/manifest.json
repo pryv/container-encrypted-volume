@@ -1,0 +1,9 @@
+{
+  "name": "env",
+  "version": "1",
+  "description": "Reads the unlock key from the CEV_KEY environment variable (base64 of 32 bytes). Plaintext delivery; simplest provider.",
+  "envelope": false,
+  "vars": [
+    { "name": "CEV_KEY", "required": true, "secret": true, "description": "base64 encoding of the 32-byte unlock key." }
+  ]
+}

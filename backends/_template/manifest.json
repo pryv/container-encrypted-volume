@@ -1,0 +1,11 @@
+{
+  "name": "REPLACE-ME",
+  "version": "1",
+  "description": "One line: what this backend encrypts with and any notable property.",
+  "requires": ["--privileged"],
+  "capabilities": {
+    "rotateWithoutReencrypt": false,
+    "separableHeaderBackup": false,
+    "growInPlace": false
+  }
+}

@@ -1,0 +1,6 @@
+# local scratch / test artefacts
+*.img
+*.key
+/tmp/
+/.cev-test/
+*.header

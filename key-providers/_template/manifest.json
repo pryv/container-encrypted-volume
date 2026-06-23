@@ -1,0 +1,9 @@
+{
+  "name": "REPLACE-ME",
+  "version": "1",
+  "description": "One line: where this provider gets the key from.",
+  "envelope": false,
+  "vars": [
+    { "name": "CEV_EXAMPLE_VAR", "required": true, "secret": false, "description": "Describe each CEV_* variable this provider reads." }
+  ]
+}

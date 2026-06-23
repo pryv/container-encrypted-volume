@@ -1,0 +1,10 @@
+{
+  "name": "file",
+  "version": "1",
+  "description": "Reads the unlock key from a file (base64 by default, or raw bytes). Pair with a tmpfs mount or a secret injected as a file (Docker/K8s secret, CSI driver).",
+  "envelope": false,
+  "vars": [
+    { "name": "CEV_KEY_FILE", "required": true, "secret": true, "description": "Path to a file containing the key." },
+    { "name": "CEV_KEY_FILE_RAW", "required": false, "secret": false, "description": "Set 'true' if the file holds 32 raw bytes instead of base64." }
+  ]
+}

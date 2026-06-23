@@ -1,0 +1,11 @@
+{
+  "name": "luks",
+  "version": "1",
+  "description": "LUKS2 on a loopback container file (kernel dm-crypt). Near-native performance with AES-NI; the container file is ciphertext on disk at all times.",
+  "requires": ["--privileged"],
+  "capabilities": {
+    "rotateWithoutReencrypt": true,
+    "separableHeaderBackup": true,
+    "growInPlace": true
+  }
+}
