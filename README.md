@@ -17,7 +17,7 @@ but nothing here is specific to it.
 ```
 FROM your-app-image:tag
 RUN apt-get update && apt-get install -y cryptsetup && rm -rf /var/lib/apt/lists/*
-COPY --from=ghcr.io/pryv/container-encrypted-volume /cev /opt/cev
+COPY --from=pryvio/container-encrypted-volume /cev /opt/cev
 ENTRYPOINT ["/opt/cev/entrypoint-wrapper.sh"]
 # CEV_* env selects backend + key provider and points app data roots at the mount
 ```

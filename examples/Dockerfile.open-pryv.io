@@ -22,7 +22,7 @@ RUN apt-get update \
  && apt-get install -y --no-install-recommends cryptsetup e2fsprogs openssl ca-certificates \
  && rm -rf /var/lib/apt/lists/*
 
-COPY --from=ghcr.io/pryv/container-encrypted-volume:latest /cev /opt/cev
+COPY --from=pryvio/container-encrypted-volume:latest /cev /opt/cev
 
 # Defaults: feature OFF, so this image behaves exactly like the base until an
 # operator sets CEV_ENABLED=true. Encryption config lives entirely here (CEV_*),

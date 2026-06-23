@@ -23,7 +23,7 @@ layered onto an application image at build time.
   `header-backup`, `grow`.
 - Templates (`backends/_template/`, `key-providers/_template/`) + authoring and
   operating guides so other backends/providers plug in without core changes.
-- Distribution image published to `ghcr.io/pryv/container-encrypted-volume`;
+- Distribution image published to `pryvio/container-encrypted-volume`;
   CI runs static checks + LUKS and gocryptfs conformance.
 - Verified end-to-end on a real open-pryv.io overlay: a registered user's event
   is stored on the encrypted volume, persists across restart, and is ciphertext

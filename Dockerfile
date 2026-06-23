@@ -1,5 +1,5 @@
 # Distribution image: carries the /cev payload so application images can
-#   COPY --from=ghcr.io/pryv/container-encrypted-volume:<tag> /cev /opt/cev
+#   COPY --from=pryvio/container-encrypted-volume:<tag> /cev /opt/cev
 # This image is not meant to run on its own.
 FROM alpine:3.20
 WORKDIR /cev
