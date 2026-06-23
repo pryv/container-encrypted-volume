@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.1
+
+- Publish the distribution image to Docker Hub (`pryvio/container-encrypted-volume`)
+  instead of ghcr, to match the project registry convention and let consuming
+  images pull the payload with the Docker Hub auth their CI already has.
+
 ## 0.1.0
 
 Initial release — modular encryption-at-rest for containerised applications,
