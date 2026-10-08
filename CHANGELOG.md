@@ -4,7 +4,9 @@
 
 - Publish the distribution image for `linux/amd64` and `linux/arm64` (one
   multi-arch tag), so arm64 application images can `COPY --from` the payload.
-- CI runs the backend conformance suite natively on both architectures.
+- CI runs the backend conformance suite natively on both architectures. The
+  gocryptfs suite no longer passes silently when it fails: it is skipped only
+  when the runner has no `/dev/fuse`, with a warning.
 
 ## 0.1.1
 

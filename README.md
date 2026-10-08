@@ -22,6 +22,9 @@ ENTRYPOINT ["/opt/cev/entrypoint-wrapper.sh"]
 # CEV_* env selects backend + key provider and points app data roots at the mount
 ```
 
+The image is published for `linux/amd64` and `linux/arm64` (since 0.1.2);
+`COPY --from` picks the variant matching the platform being built.
+
 ## What it protects (threat model)
 
 Defends data on the **storage medium**: stolen / lost / decommissioned disks,

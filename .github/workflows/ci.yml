@@ -15,6 +15,7 @@ jobs:
   # backends are proven on arm64 too, not only built for it.
   test:
     strategy:
+      fail-fast: false
       matrix:
         runner: [ubuntu-latest, ubuntu-24.04-arm]
     runs-on: ${{ matrix.runner }}
@@ -34,13 +35,16 @@ jobs:
             apt-get update -qq && apt-get install -y -qq cryptsetup e2fsprogs openssl >/dev/null
             chmod +x cev.sh backends/*/backend.sh key-providers/*/provider.sh test/*.sh
             ./test/conformance.sh luks'
+      # Skipped only when the runner has no FUSE device; any other failure
+      # (install, mount, conformance) fails the job.
       - name: gocryptfs conformance (FUSE)
         run: |
+          if [ ! -e /dev/fuse ]; then echo "::warning::gocryptfs conformance skipped: no /dev/fuse on this runner"; exit 0; fi
           docker run --rm --cap-add SYS_ADMIN --device /dev/fuse --security-opt apparmor=unconfined \
             -v "$PWD:/cev" -w /cev node:24-bookworm bash -c '
             apt-get update -qq && apt-get install -y -qq gocryptfs fuse openssl >/dev/null
             chmod +x cev.sh backends/*/backend.sh key-providers/*/provider.sh test/*.sh
-            ./test/conformance.sh gocryptfs' || echo "gocryptfs conformance skipped (runner FUSE policy)"
+            ./test/conformance.sh gocryptfs'
 
   publish:
     needs: test
