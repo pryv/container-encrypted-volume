@@ -11,8 +11,13 @@ permissions:
   contents: read
 
 jobs:
+  # Conformance runs natively on both published architectures, so the
+  # backends are proven on arm64 too, not only built for it.
   test:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        runner: [ubuntu-latest, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v4
       - name: Static checks (syntax + manifests + hygiene)
@@ -43,6 +48,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # The payload is shell scripts only; QEMU just runs the Dockerfile's
+      # chmod step for the arm64 variant.
+      - uses: docker/setup-qemu-action@v3
       - uses: docker/setup-buildx-action@v3
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
@@ -61,6 +69,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

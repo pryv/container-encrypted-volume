@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.2
+
+- Publish the distribution image for `linux/amd64` and `linux/arm64` (one
+  multi-arch tag), so arm64 application images can `COPY --from` the payload.
+- CI runs the backend conformance suite natively on both architectures.
+
 ## 0.1.1
 
 - Publish the distribution image to Docker Hub (`pryvio/container-encrypted-volume`)
