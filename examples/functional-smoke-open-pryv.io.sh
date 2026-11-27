@@ -48,7 +48,7 @@ cluster: { apiWorkers: 1, hfsWorkers: 0, previewsWorker: false }
 dnsLess: { isActive: true, publicUrl: $URL }
 http: { ip: 0.0.0.0, port: 3000 }
 service: { name: 'encrypted smoke', serial: '1', eventTypes: https://pryv.github.io/event-types/flat.json, home: $URL, support: $URL, terms: $URL }
-services: { email: { enabled: { welcome: false, resetPassword: false } } }
+services: { email: { enabled: false } }
 logs: { console: { active: true, level: warn }, file: { active: false } }
 storages:
   base: { engine: sqlite }
